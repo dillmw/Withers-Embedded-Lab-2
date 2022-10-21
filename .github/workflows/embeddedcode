@@ -1,0 +1,133 @@
+//Part 1 and 2
+
+#include <msp430.h>
+int sum(int, int);
+float b = 6.0;
+int main(void)
+{
+    WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer
+    //part 1
+    unsigned char c = 0x0f;
+    unsigned char d = 0x5;
+        int a = 3;
+        ++a; //increment a
+        --b; //decrement b
+        unsigned char val1 = c && d;
+        unsigned char val2 = c || d;
+
+    //part 2
+        int e = 0b11001111011000011;
+        int f = 0b11001111011000011;
+        int h = sum(e,f);
+
+        while(1);
+    return 0;
+}
+
+int sum(int s1, int s2) {
+    return(s1+s2);
+}
+
+
+//Part 3a
+mov.b #0ABC1h, R4
+	mov.b #0BCD1h, R5
+	mov.b #0001h, R6
+	and R6, R4
+	and R6, R5
+	
+	cmp R4, R6
+	jeq R4EqualR6
+	jmp $
+
+R4EqualR6:
+	cmp R5, R6
+	jeq R5EqualR6
+	jmp $
+	
+R5EqualR6:
+	mov.w #0ff0h, R9
+	jmp $
+	NOP
+
+
+//Part 3b
+
+	mov.b #0ABC1h, R4
+	mov.b #0BCD1h, R5
+	mov.b #0001h, R6
+	mov.b #1111b, R10
+	mov.b #0101b, R9
+	and R6, R4
+	and R6, R5
+
+	XOR R4, R5
+
+	cmp R4, R6
+	jeq R4EqualR6
+	jmp $
+
+R4EqualR6:
+	xor R9, R10
+	jmp $
+	NOP
+
+//Part 5:
+
+ 	mov.w #00FDh, R4
+ 	mov.w #00FEh, R5
+ 	cmp R4, R5;
+ 	jl less
+ 	jge greater
+ 	jmp $;
+ 	
+ less:
+ 	call #less_function
+ 	jmp $
+
+
+ greater:
+ 	jeq equal
+ 	call #greater_function
+
+
+ less_function:
+ 	mov.w #000Ah, &200h
+ 	mov.w #0009h, &201h
+ 	mov.w #0008h, &202h
+ 	mov.w #0007h, &203h
+ 	mov.w #0006h, &204h
+ 	add #1h, R4
+ 	Ret
+
+
+ equal: 
+ 	jmp $;
+
+
+ greater_function:
+ 	mov.w #0001h, &300h
+ 	mov.w #0002h, &301h
+ 	mov.w #0003h, &302h
+ 	mov.w #0004h, &303h
+ 	mov.w #0005h, &304h
+ 	sub #1h, R4
+ 	ret
+ 
+
+//Part 6:
+
+	
+	mov.w #2D97h, R1
+	mov.w #6239h, R2
+	mov.w #8A32h, R3 //third number
+	
+	jmp operations
+	
+operations:
+	and R1, R2
+	or R2, R3
+	jmp $
+	
+	mov.w R3, &203Ch
+
